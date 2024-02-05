@@ -1,37 +1,67 @@
 package util;
 
-import main.*;
-
-import javax.imageio.ImageIO;
+import main.MainFrame;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
 
 public class FunctionButton extends JButton {
-    BufferedImage img;
-    public FunctionButton(){
-        setBackground(Color.green);
-
-        InputStream ip = Main.class.getResourceAsStream("/reset.png");
-        try {
-            img = ImageIO.read(ip);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        setPreferredSize(new Dimension(100, 100));
-        setContentAreaFilled(false);
+    static private final String[] contentList = {"Focus", "Short Break", "Long Break", "Start", "Pause", "Setting"};
+    static public final int FOCUS_TAB = 1;
+    static public final int SHORTBREAK_TAB = 2;
+    static public final int LONGBREAK_TAB = 3;
+    static public final int START = 4;
+    static public final int PAUSE = 5;
+    static public final int SETTING = 6;
+    int yPos = 0;
+    public FunctionButton(MainFrame mainFrame, TimeLabel label, int function){
+        setBackground(new Color(1,1,1,0.1f));
+        setForeground(Color.white);
+        setText(contentList[function - 1]);
+        setHorizontalTextPosition(JButton.CENTER);
+        setVerticalTextPosition(JButton.CENTER);
+        setFont(new Font("Calibri", Font.BOLD, 25));
+        setFocusable(false);
         setBorder(BorderFactory.createEmptyBorder());
+        setContentAreaFilled(false);
+        addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                 switch(function){
+                     case PAUSE -> TimeLabel.isRunning = false;
+                     case START -> TimeLabel.isRunning = true;
+                     case SETTING -> MainFrame.st.setVisible(true);
+                     default -> {
+                         mainFrame.changeTabColor(function);
+                         label.changeSession(function);
+                     }
+                 }
+            }
+            @Override
+            public void mousePressed(MouseEvent e) {
+                yPos += 5;
+            }
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                yPos -= 5;
+            }
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                setBackground(new Color(0,0,0f,0.2f));
+            }
+            @Override
+            public void mouseExited(MouseEvent e) {
+                setBackground(new Color(1,1,1,0.1f ));
+            }
+        });
+        int buttonWidth = 130;
+        int buttonHeigth = 70;
+        setPreferredSize(new Dimension(buttonWidth, buttonHeigth + 5));
     }
-
     public void paintComponent(Graphics g){
-        super.paintComponent(g);
         g.setColor(getBackground());
-        g.fillRoundRect(0, 0, 100, 100, 50, 50);
-        g.drawImage(img, 0, 0,100,100, null);
+        g.fillRoundRect(0, yPos, 130, 70, 20, 20);
+        super.paintComponent(g);
     }
 }

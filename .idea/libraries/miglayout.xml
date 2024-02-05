@@ -2,7 +2,7 @@
   <library name="miglayout" type="repository">
     <properties maven-id="com.miglayout:miglayout:3.7.4" />
     <CLASSES>
-      <root url="jar://$MAVEN_REPOSITORY$/com/miglayout/miglayout/3.7.4/miglayout-3.7.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/miglayout-3.7.4.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

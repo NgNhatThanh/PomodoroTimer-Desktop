@@ -1,71 +1,75 @@
 package util;
-import main.Main;
 
+import main.MainFrame;
 import javax.swing.*;
 import java.awt.*;
-import java.sql.PreparedStatement;
 
-public class MyLabel extends JLabel implements Runnable {
+public class TimeLabel extends JLabel {
     static public boolean isRunning = false;
-    static public int focusMins = 25;
-    static public int sBreakMins = 5;
-    static public int lBreakMins = 10;
-    public int currentStatus = MyButton.FOCUS_TAB;
-    public MyLabel(String content){
+    static private int focusMins = 25;
+    static private int sBreakMins = 5;
+    static private int lBreakMins = 10;
+    public static int getFocusMins() {
+        return focusMins;
+    }
+
+    public static int getsBreakMins() {
+        return sBreakMins;
+    }
+
+    public static int getlBreakMins() {
+        return lBreakMins;
+    }
+    private int currentMin = focusMins, currentSec = 0;
+    private int currentStatus = FunctionButton.FOCUS_TAB;
+
+    public TimeLabel(){
         setForeground(Color.white);
         setPreferredSize(new Dimension(400, 180));
         setFont(new Font("Calibri", Font.BOLD, 160));
         setHorizontalAlignment(JLabel.CENTER);
         setTimeDisplay();
     }
-    public void setFocusMins(int mins){
-        focusMins = mins;
+    public void setSessionTime(int mins, int status){
+        switch (status){
+            case FunctionButton.FOCUS_TAB -> focusMins = mins;
+            case FunctionButton.LONGBREAK_TAB -> lBreakMins = mins;
+            case FunctionButton.SHORTBREAK_TAB -> sBreakMins = mins;
+        }
         reset(currentStatus);
-        repaint();
+        setTimeDisplay();
     }
-    public void setsBreakMins(int mins){
-        sBreakMins = mins;
-        reset(currentStatus);
-        repaint();
-    }
-    public void setlBreakMins(int mins){
-        lBreakMins = mins;
-        reset(currentStatus);
-        repaint();
-    }
-    int currentMin = 0, currentSec = 5;
     public void reset(int status){
         switch (status){
-            case MyButton.FOCUS_TAB -> currentMin = focusMins;
-            case MyButton.SHORTBREAK_TAB -> currentMin = sBreakMins;
-            case MyButton.LONGBREAK_TAB -> currentMin = lBreakMins;
+            case FunctionButton.FOCUS_TAB -> currentMin = focusMins;
+            case FunctionButton.SHORTBREAK_TAB -> currentMin = sBreakMins;
+            case FunctionButton.LONGBREAK_TAB -> currentMin = lBreakMins;
         }
         currentSec = 0;
         isRunning = false;
-        repaint();
+        setTimeDisplay();
     }
-    public void changeTab(int status){
+    public void changeSession(int status){
         if(status != currentStatus) {
             switch (status){
-                case MyButton.FOCUS_TAB -> currentMin = focusMins;
-                case MyButton.SHORTBREAK_TAB -> currentMin = sBreakMins;
-                case MyButton.LONGBREAK_TAB -> currentMin = lBreakMins;
+                case FunctionButton.FOCUS_TAB -> currentMin = focusMins;
+                case FunctionButton.SHORTBREAK_TAB -> currentMin = sBreakMins;
+                case FunctionButton.LONGBREAK_TAB -> currentMin = lBreakMins;
             }
             currentSec = 0;
             isRunning = false;
             currentStatus = status;
-            repaint();
+            setTimeDisplay();
         }
     }
-    String timeDisplay;
     private void setTimeDisplay(){
         String timeDisplay = String.format("%02d:%02d", currentMin, currentSec);
         setText(timeDisplay);
     }
     public void alarm(){
-        Main.alarm.start();
+        MainFrame.sound.alarm();
         JOptionPane.showMessageDialog(null, "End session", "", JOptionPane.INFORMATION_MESSAGE);
-        Main.alarm.reset();
+        MainFrame.sound.resetAlarm();
     }
     public void countDown(){
         long now = System.currentTimeMillis();
@@ -78,7 +82,7 @@ public class MyLabel extends JLabel implements Runnable {
                     --currentMin;
                     currentSec = 59;
                 }
-                repaint();
+                setTimeDisplay();
                 if(currentSec == 0 && currentMin == 0){
                     isRunning = false;
                     alarm();
@@ -87,18 +91,10 @@ public class MyLabel extends JLabel implements Runnable {
             now = System.currentTimeMillis();
         }
     }
-    public void paintComponent(Graphics g){
-        setTimeDisplay();
-        super.paintComponent(g);
-    }
-
-    @Override
     public void run() {
-        int cnt = 1;
         while(true){
-//            System.out.println(cnt++);
             try {
-                Thread.sleep(1000);
+                Thread.sleep(500);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }

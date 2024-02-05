@@ -1,35 +1,31 @@
 package util;
 
-import main.Main;
+import main.MainFrame;
 import net.miginfocom.swing.MigLayout;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Set;
 
 public class SettingFrame extends JFrame implements ActionListener {
     JLabel focusTimeText = new JLabel("Focus time:");
     JLabel sBreakText = new JLabel("Short break:");
     JLabel lBreakText = new JLabel("Long break:");
-
-    JTextField focusTimeTextField = new JTextField(Integer.toString(MyLabel.focusMins));
-    JTextField sBreakTextField = new JTextField(Integer.toString(MyLabel.sBreakMins));
-    JTextField lBreakTextField = new JTextField(Integer.toString(MyLabel.lBreakMins));
+    JTextField focusTimeTextField = new JTextField(Integer.toString(TimeLabel.getFocusMins()));
+    JTextField sBreakTextField = new JTextField(Integer.toString(TimeLabel.getsBreakMins()));
+    JTextField lBreakTextField = new JTextField(Integer.toString(TimeLabel.getlBreakMins()));
 
     JButton saveButton = new JButton("Save");
     public SettingFrame(){
+        setResizable(false);
         setLayout(new MigLayout("", "[][]", "[][][][]"));
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
         setSize(170, 200);
 
-
         focusTimeText.setFont(new Font("Calibri", Font.BOLD, 20));
         sBreakText.setFont(new Font("Calibri", Font.BOLD, 20));
         lBreakText.setFont(new Font("Calibri", Font.BOLD, 20));
-
 
         focusTimeTextField.setPreferredSize(new Dimension(50, 25));
         focusTimeTextField.setFont(new Font("Calibri", Font.BOLD, 20));
@@ -45,9 +41,7 @@ public class SettingFrame extends JFrame implements ActionListener {
         add(lBreakText);
         add(lBreakTextField, "wrap");
         add(saveButton, "span, center");
-
         saveButton.addActionListener(this);
-
     }
     boolean checkInput(String s){
         for(int i = 0; i < s.length(); ++i){
@@ -55,7 +49,6 @@ public class SettingFrame extends JFrame implements ActionListener {
         }
         return !s.isEmpty();
     }
-
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == saveButton){
@@ -63,10 +56,9 @@ public class SettingFrame extends JFrame implements ActionListener {
             && checkInput(lBreakTextField.getText())){
                 JOptionPane.showMessageDialog(null, "Saved successful", "", JOptionPane.INFORMATION_MESSAGE);
                 dispose();
-//                MyLabel.focusMins = 10;
-                Main.label.setFocusMins(Integer.parseInt(focusTimeTextField.getText()));
-                Main.label.setsBreakMins(Integer.parseInt(sBreakTextField.getText()));
-                Main.label.setlBreakMins(Integer.parseInt(lBreakTextField.getText()));
+                MainFrame.label.setSessionTime(Integer.parseInt(focusTimeTextField.getText()), FunctionButton.FOCUS_TAB);
+                MainFrame.label.setSessionTime(Integer.parseInt(sBreakTextField.getText()), FunctionButton.SHORTBREAK_TAB);
+                MainFrame.label.setSessionTime(Integer.parseInt(lBreakTextField.getText()), FunctionButton.LONGBREAK_TAB);
             }
             else JOptionPane.showMessageDialog(null, "Invalid input!", "Error", JOptionPane.ERROR_MESSAGE);
         }
