@@ -54,7 +54,7 @@ public class SettingFrame extends JFrame implements ActionListener {
         if(e.getSource() == saveButton){
             if(checkInput(focusTimeTextField.getText()) && checkInput(sBreakTextField.getText())
             && checkInput(lBreakTextField.getText())){
-                JOptionPane.showMessageDialog(null, "Saved successful", "", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Saved successfully", "", JOptionPane.INFORMATION_MESSAGE);
                 dispose();
                 MainFrame.label.setSessionTime(Integer.parseInt(focusTimeTextField.getText()), FunctionButton.FOCUS_TAB);
                 MainFrame.label.setSessionTime(Integer.parseInt(sBreakTextField.getText()), FunctionButton.SHORTBREAK_TAB);
