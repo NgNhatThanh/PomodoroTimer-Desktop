@@ -30,6 +30,8 @@ public class FunctionButton extends Button {
                 }
             }
         });
+        setOnMouseEntered(mouseEvent -> setStyle("-fx-background-color: rgba(0, 0, 0, 0.3)"));
+        setOnMouseExited(mouseEvent -> setStyle("-fx-background-color: rgba(255, 255, 255, 0.2)"));
         setOnMousePressed(mouseEvent -> setLayoutY(getLayoutY() + 5));
         setOnMouseReleased(mouseEvent -> setLayoutY(getLayoutY() - 5));
         setPrefSize(130, 70);
