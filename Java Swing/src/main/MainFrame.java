@@ -32,7 +32,7 @@ public class MainFrame extends JFrame{
 
         ImageIcon icon = new ImageIcon("res\\logo.png");
         getContentPane().setBackground(focusTabColor);
-        setTitle("Pomodoro timer");
+        setTitle("Pomodoro Timer");
         setIconImage(icon.getImage());
         setSize(450, 420);
         setResizable(false);
@@ -47,7 +47,6 @@ public class MainFrame extends JFrame{
         add(settingButton, "center");
         setLocationRelativeTo(null); // put frame in the middle of screen
         setVisible(true);
-        label.run();
     }
     public void changeTabColor(int tab){
         switch (tab){

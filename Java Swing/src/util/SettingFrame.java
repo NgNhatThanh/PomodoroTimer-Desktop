@@ -59,6 +59,7 @@ public class SettingFrame extends JFrame implements ActionListener {
                 MainFrame.label.setSessionTime(Integer.parseInt(focusTimeTextField.getText()), FunctionButton.FOCUS_TAB);
                 MainFrame.label.setSessionTime(Integer.parseInt(sBreakTextField.getText()), FunctionButton.SHORTBREAK_TAB);
                 MainFrame.label.setSessionTime(Integer.parseInt(lBreakTextField.getText()), FunctionButton.LONGBREAK_TAB);
+                MainFrame.label.reset(MainFrame.label.getCurrentStatus());
             }
             else JOptionPane.showMessageDialog(null, "Invalid input!", "Error", JOptionPane.ERROR_MESSAGE);
         }

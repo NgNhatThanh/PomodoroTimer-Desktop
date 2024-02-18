@@ -29,8 +29,8 @@ public class FunctionButton extends JButton {
             @Override
             public void mouseClicked(MouseEvent e) {
                  switch(function){
-                     case PAUSE -> TimeLabel.isRunning = false;
-                     case START -> TimeLabel.isRunning = true;
+                     case PAUSE -> MainFrame.label.pause();
+                     case START -> MainFrame.label.start();
                      case SETTING -> MainFrame.st.setVisible(true);
                      default -> {
                          mainFrame.changeTabColor(function);
